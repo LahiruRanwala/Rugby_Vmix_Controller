@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vMix Pro Rugby Controller V9</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: white;
+    padding: 15px;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.controls-panel {
+    flex: 2;
+    min-width: 450px;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.dashboard-panel {
+    flex: 1;
+    min-width: 300px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #333;
+    height: fit-content;
+}
+
+.btn-toggle-setup {
+    background: #2c3e50;
+    border: 1px solid #34495e;
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    color: #00a8ff;
+}
+
+.setup-panel {
+    display: none; 
+    width: 100%;
+    background: #1c2833;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #2980b9;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.setup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+h2, h3 {
+    color: #00a8ff;
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+    color: #aaa;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 10px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+input {
+    background: #333;
+    color: #00a8ff;
+    text-align: center;
+}
+
+.text-left {
+    text-align: left !important;
+    color: #fff !important;
+}
+
+select {
+    background: #444;
+    color: white;
+}
+
+textarea {
+    background: #333;
+    color: #fff;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.team-section {
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.overlay-section {
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+}
+
+.grid-6 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+button {
+    padding: 12px 5px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: background 0.1s, transform 0.05s;
+}
+
+button:active {
+    transform: scale(0.92);
+}
+
+.btn-flash-confirm {
+    background: #f1c40f !important;
+    color: #000 !important;
+    transform: scale(0.95);
+}
+
+.active-overlay {
+    background: #e74c3c !important;
+    box-shadow: 0 0 15px #e74c3c !important;
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    from { opacity: 0.9; }
+    to { opacity: 1; box-shadow: 0 0 22px #e74c3c; }
+}
+
+.btn-home { background: #27ae60; }
+.btn-visitor { background: #c0392b; }
+.btn-stat { background: #555; }
+.btn-l3 { background: #2980b9; padding: 10px 2px; font-size: 11px; }
+.btn-global-overlay { background: #d35400; padding: 14px; font-size: 14px; }
+.btn-undo { background: #f39c12; width: 100%; padding: 15px; margin-top: 15px; font-size: 16px; display: none; }
+.btn-reset { background: #8e44ad; width: 100%; padding: 16px; margin-top: 15px; font-size: 17px; }
+.btn-update { background: #2980b9; font-size: 15px; padding: 12px; width: 100%; margin-top: 10px; }
+
+.status-box {
+    margin-top: 15px;
+    background: #222;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 13px;
+    color: #bbb;
+}
+
+.dash-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+}
+
+.dash-score {
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.home-color { color: #2ecc71; }
+.vis-color { color: #e74c3c; }
+</style>
+</head>
+
+<body>
+
+<div class="controls-panel">
+    
+    <button class="btn-toggle-setup" onclick="toggleSetupMenu()">
+        🛠️ OPEN / CLOSE MATCH SETUP MENU
+    </button>
+
+    <div class="setup-panel" id="matchSetupPanel">
+        <h2>⚙️ MATCH DETAILS SETUP</h2>
+        <div class="setup-grid">
+            <div class="team-section" style="border-top: 4px solid #27ae60;">
+                <h3 class="home-color">🏠 Home Team Configuration</h3>
+                <label>Long Name</label>
+                <input type="text" id="setup_HomeLong" class="text-left" value="Kandy SC" oninput="saveEverything()">
+                <label>Short Name</label>
+                <input type="text" id="setup_HomeShort" class="text-left" value="KAND" oninput="saveEverything()">
+                <label>Logo File Path</label>
+                <input type="text" id="setup_HomeLogo" class="text-left" placeholder="C:\Logos\kandy.png" oninput="saveEverything()">
+                <label>Roster</label>
+                <textarea id="setup_HomeRoster" rows="5" oninput="saveEverything()">10|Mahela Perera&#10;01|John Smith&#10;15|Chaminda Bandara</textarea>
+            </div>
+
+            <div class="team-section" style="border-top: 4px solid #c0392b;">
+                <h3 class="vis-color">🏃 Visitor Team Configuration</h3>
+                <label>Long Name</label>
+                <input type="text" id="setup_VisitorLong" class="text-left" value="CR & FC" oninput="saveEverything()">
+                <label>Short Name</label>
+                <input type="text" id="setup_VisitorShort" class="text-left" value="CRFC" oninput="saveEverything()">
+                <label>Logo File Path</label>
+                <input type="text" id="setup_VisitorLogo" class="text-left" placeholder="C:\Logos\crfc.png" oninput="saveEverything()">
+                <label>Roster</label>
+                <textarea id="setup_VisitorRoster" rows="5" oninput="saveEverything()">09|David Silva&#10;22|C. Radhakrishnan&#10;08|Sunil Fernando</textarea>
+            </div>
+        </div>
+        <button class="btn-update" onclick="pushMatchDetailsTovMix()">🚀 UPDATE MATCH DETAILS & ROSTERS</button>
+    </div>
+
+    <h2>🏉 MATCH CONTROLS</h2>
+    <label>🌐 vMix PC IP Address</label>
+    <input type="text" id="vmixIP" value="10.45.180.35" placeholder="Example: 192.168.1.100" oninput="saveEverything()">
+
+    <div class="overlay-section">
+        <h3 style="color: #d35400; margin-bottom: 5px;">📺 LIVE GRAPHICS OVERLAYS</h3>
+        <div class="grid-2">
+            <button id="btn_overlay_Lineout" class="btn-global-overlay" onclick="toggleOverlay('LineoutGraphic', this)">
+                📋 LINEOUT STATS CARD
+            </button>
+            <button id="btn_overlay_Scrum" class="btn-global-overlay" onclick="toggleOverlay('ScrumGraphic', this)">
+                📋 SCRUM STATS CARD
+            </button>
+        </div>
+    </div>
+
+    <div class="team-section">
+        <h3 id="label_HomeTitle" class="home-color">🏠 HOME TEAM</h3>
+        <select id="homeDropdown" onchange="pushPlayerToGraphics('Home','homeDropdown')">
+            <option value="">-- Select Home Player --</option>
+        </select>
+
+        <label>🔢 Add Score & Stats</label>
+        <div class="grid-6">
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Try',5,'KeyStats','HomeTries')">Try (+5)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Conv',2,'KeyStats','HomeConv')">Conv (+2)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Pen',3,'KeyStats','HomePen')">Penalty (+3)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Drop',3,'KeyStats','HomeDrop')">Drop (+3)</button>
+            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Home','Lineout',0,'LineoutGraphic','HomeLineout')">Lineout</button>
+            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Home','Scrum',0,'ScrumGraphic','HomeScrum')">Scrum</button>
+        </div>
+
+        <label>🎬 Lower Third Controls</label>
+        <div class="grid-4">
+            <button class="btn-l3" onclick="toggleOverlay('HomeTry', this)">TRY</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomeConversion', this)">CONV</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomePenalty', this)">PEN</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomeDrop', this)">DROP</button>
+        </div>
+    </div>
+
+    <div class="team-section">
+        <h3 id="label_VisitorTitle" class="vis-color">🏃 VISITOR TEAM</h3>
+        <select id="visitorDropdown" onchange="pushPlayerToGraphics('Visitor','visitorDropdown')">
+            <option value="">-- Select Visitor Player --</option>
+        </select>
+
+        <label>🔢 Add Score & Stats</label>
+        <div class="grid-6">
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Try',5,'KeyStats','VisitorTries')">Try (+5)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Conv',2,'KeyStats','VisitorConv')">Conv (+2)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Pen',3,'KeyStats','VisitorPen')">Penalty (+3)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Drop',3,'KeyStats','VisitorDrop')">Drop (+3)</button>
+            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Lineout',0,'LineoutGraphic','VisitorLineout')">Lineout</button>
+            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Scrum',0,'ScrumGraphic','VisitorScrum')">Scrum</button>
+        </div>
+
+        <label>🎬 Lower Third Controls</label>
+        <div class="grid-4">
+            <button class="btn-l3" onclick="toggleOverlay('VisitorTry', this)">TRY</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorConversion', this)">CONV</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorPenalty', this)">PEN</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorDrop', this)">DROP</button>
+        </div>
+    </div>
+
+    <button id="undoBtn" class="btn-undo" onclick="undoLastAction()">↩️ UNDO LAST ACTION</button>
+    <button class="btn-reset" onclick="resetMatch()">🔄 RESET ALL MATCH DATA</button>
+    <div class="status-box" id="statusBox">READY</div>
+</div>
+
+<div class="dashboard-panel">
+    <h3>📊 LIVE PREVIEW</h3>
+    <div class="dash-score">
+        <span id="dash_HomeScore" class="home-color">0</span>
+        <span style="color:#666;">-</span>
+        <span id="dash_VisitorScore" class="vis-color">0</span>
+    </div>
+    <div class="dash-row"><span>Tries</span><span id="dash_Tries">0 - 0</span></div>
+    <div class="dash-row"><span>Conversions</span><span id="dash_Conv">0 - 0</span></div>
+    <div class="dash-row"><span>Penalties</span><span id="dash_Pen">0 - 0</span></div>
+    <div class="dash-row"><span>Drop Goals</span><span id="dash_Drop">0 - 0</span></div>
+    <div class="dash-row"><span>Lineouts</span><span id="dash_Lineout">0 - 0</span></div>
+    <div class="dash-row"><span>Scrums</span><span id="dash_Scrum">0 - 0</span></div>
+</div>
+
+<script>
+let homeRoster = [];
+let visitorRoster = [];
+const mainScoreboards = ["MainBug", "KeyStats", "HalfTime", "FullTime", "Highlights"];
+
+const fieldMap = {
+    HomeScore: "HomeScore.Text", VisitorScore: "VisitorScore.Text",
+    HomeTries: "HomeTries.Text", VisitorTries: "VisitorTries.Text",
+    HomeConv: "HomeConv.Text", VisitorConv: "VisitorConv.Text",
+    HomePen: "HomePen.Text", VisitorPen: "VisitorPen.Text",
+    HomeDrop: "HomeDrop.Text", VisitorDrop: "VisitorDrop.Text",
+    HomeLineout: "HomeLineout.Text", VisitorLineout: "VisitorLineout.Text",
+    HomeScrum: "HomeScrum.Text", VisitorScrum: "VisitorScrum.Text",
+    PlayerName: "PlayerName.Text", PlayerNumber: "PlayerNumber.Text",
+    HomeLong: "HomeTeamLong.Text", HomeShort: "HomeTeamShort.Text", HomeLogo: "HomeLogo.Source",
+    VisitorLong: "VisitorTeamLong.Text", VisitorShort: "VisitorTeamShort.Text", VisitorLogo: "VisitorLogo.Source"
+};
+
+let matchState = {
+    HomeScore: 0, VisitorScore: 0, HomeTries: 0, VisitorTries: 0, HomeConv: 0, VisitorConv: 0,
+    HomePen: 0, VisitorPen: 0, HomeDrop: 0, VisitorDrop: 0, HomeLineout: 0, VisitorLineout: 0, HomeScrum: 0, VisitorScrum: 0
+};
+
+let actionHistory = [];
+
+// 🌟 Run Auto-Loader right on bootup
+window.onload = function() {
+    loadEverything();
+};
+
+// 🌟 New Function: Packs up all parameters and writes them to phone cache memory
+function saveEverything() {
+    const backupPackage = {
+        matchState: matchState,
+        actionHistory: actionHistory,
+        inputs: {
+            vmixIP: document.getElementById("vmixIP").value,
+            hLong: document.getElementById("setup_HomeLong").value,
+            hShort: document.getElementById("setup_HomeShort").value,
+            hLogo: document.getElementById("setup_HomeLogo").value,
+            hRoster: document.getElementById("setup_HomeRoster").value,
+            vLong: document.getElementById("setup_VisitorLong").value,
+            vShort: document.getElementById("setup_VisitorShort").value,
+            vLogo: document.getElementById("setup_VisitorLogo").value,
+            vRoster: document.getElementById("setup_VisitorRoster").value,
+            homeSel: document.getElementById("homeDropdown").value,
+            visitorSel: document.getElementById("visitorDropdown").value
+        }
+    };
+    localStorage.setItem("rugby_controller_cache", JSON.stringify(backupPackage));
+}
+
+// 🌟 New Function: Restores exact states dynamically after a browser crash or refresh
+function loadEverything() {
+    const rawCache = localStorage.getItem("rugby_controller_cache");
+    if (!rawCache) {
+        parseRostersFromUI();
+        updateDashboard();
+        return;
+    }
+
+    const data = JSON.parse(rawCache);
+    matchState = data.matchState || matchState;
+    actionHistory = data.actionHistory || [];
+
+    if (data.inputs) {
+        document.getElementById("vmixIP").value = data.inputs.vmixIP;
+        document.getElementById("setup_HomeLong").value = data.inputs.hLong;
+        document.getElementById("setup_HomeShort").value = data.inputs.hShort;
+        document.getElementById("setup_HomeLogo").value = data.inputs.hLogo;
+        document.getElementById("setup_HomeRoster").value = data.inputs.hRoster;
+        document.getElementById("setup_VisitorLong").value = data.inputs.vLong;
+        document.getElementById("setup_VisitorShort").value = data.inputs.vShort;
+        document.getElementById("setup_VisitorLogo").value = data.inputs.vLogo;
+        document.getElementById("setup_VisitorRoster").value = data.inputs.vRoster;
+    }
+
+    // Restore Controller Labels
+    let hLong = document.getElementById("setup_HomeLong").value.trim();
+    let vLong = document.getElementById("setup_VisitorLong").value.trim();
+    if(hLong) document.getElementById("label_HomeTitle").innerText = `🏠 ${hLong.toUpperCase()}`;
+    if(vLong) document.getElementById("label_VisitorTitle").innerText = `🏃 ${vLong.toUpperCase()}`;
+
+    parseRostersFromUI();
+
+    // Re-select previous active dropdown index if valid
+    if (data.inputs) {
+        document.getElementById("homeDropdown").value = data.inputs.homeSel;
+        document.getElementById("visitorDropdown").value = data.inputs.visitorSel;
+    }
+
+    if (actionHistory.length > 0) document.getElementById("undoBtn").style.display = "block";
+    updateDashboard();
+    setStatus("🧠 Session Restored Automatically!");
+}
+
+function toggleSetupMenu() {
+    let panel = document.getElementById("matchSetupPanel");
+    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+}
+
+function triggerTapConfirm(buttonElement) {
+    buttonElement.classList.add("btn-flash-confirm");
+    setTimeout(() => { buttonElement.classList.remove("btn-flash-confirm"); }, 250);
+}
+
+function toggleOverlay(inputName, buttonElement) {
+    sendAPI('OverlayInput1', inputName);
+    if (buttonElement) buttonElement.classList.toggle("active-overlay");
+    
+    if(buttonElement && buttonElement.classList.contains("active-overlay")) {
+        setStatus(`📺 ${inputName} LIVE ON SCREEN`);
+    } else {
+        setStatus("📺 Overlay Cleared");
+    }
+}
+
+function setStatus(message) {
+    document.getElementById("statusBox").innerText = message;
+}
+
+function parseRostersFromUI() {
+    homeRoster = document.getElementById("setup_HomeRoster").value.split('\n').filter(line => line.trim() !== "");
+    visitorRoster = document.getElementById("setup_VisitorRoster").value.split('\n').filter(line => line.trim() !== "");
+    populateList("homeDropdown", homeRoster);
+    populateList("visitorDropdown", visitorRoster);
+}
+
+function populateList(elementId, rosterArray) {
+    let select = document.getElementById(elementId);
+    select.innerHTML = `<option value="">-- Select Player --</option>`;
+    rosterArray.forEach(player => {
+        let parts = player.split('|');
+        if (parts.length === 2) select.add(new Option(`#${parts[0]} - ${parts[1]}`, player));
+    });
+}
+
+// 🔏 THE IDENTITY ISOLATION GATEWAY: Only this button pushes names/logos to vMix
+function pushMatchDetailsTovMix() {
+    let hLong = document.getElementById("setup_HomeLong").value.trim();
+    let hShort = document.getElementById("setup_HomeShort").value.trim();
+    let hLogo = document.getElementById("setup_HomeLogo").value.trim();
+    let vLong = document.getElementById("setup_VisitorLong").value.trim();
+    let vShort = document.getElementById("setup_VisitorShort").value.trim();
+    let vLogo = document.getElementById("setup_VisitorLogo").value.trim();
+
+    document.getElementById("label_HomeTitle").innerText = `🏠 ${hLong.toUpperCase()}`;
+    document.getElementById("label_VisitorTitle").innerText = `🏃 ${vLong.toUpperCase()}`;
+    parseRostersFromUI();
+
+    mainScoreboards.forEach(bg => {
+        if(hLong)   sendAPI('SetText', bg, fieldMap.HomeLong, hLong);
+        if(hShort)  sendAPI('SetText', bg, fieldMap.HomeShort, hShort);
+        if(hLogo)   sendAPI('SetImage', bg, fieldMap.HomeLogo, hLogo);
+        if(vLong)   sendAPI('SetText', bg, fieldMap.VisitorLong, vLong);
+        if(vShort)  sendAPI('SetText', bg, fieldMap.VisitorShort, vShort);
+        if(vLogo)   sendAPI('SetImage', bg, fieldMap.VisitorLogo, vLogo);
+    });
+    
+    saveEverything();
+    setStatus("🚀 All Graphics Updated!");
+}
+
+function getBaseURL() {
+    let rawIP = document.getElementById("vmixIP").value.trim();
+    let cleanIP = rawIP.replace(/^https?:\/\//i, '').split(':')[0];
+    if (!cleanIP) cleanIP = "127.0.0.1";
+    return `http://${cleanIP}:8088/api/`;
+}
+
+function sendAPI(func, input = "", field = "", val = "") {
+    let url = `${getBaseURL()}?Function=${func}`;
+    if (input !== "") url += `&Input=${encodeURIComponent(input)}`;
+    if (field !== "") {
+        if (func === 'SetImage') {
+            url += `&Value=${encodeURIComponent(val)}`;
+        } else {
+            url += `&SelectedName=${encodeURIComponent(field)}&Value=${encodeURIComponent(val)}`;
+        }
+    }
+    fetch(url).catch(error => { console.error(error); setStatus("❌ Connection Failed"); });
+}
+
+function pushPlayerToGraphics(team, dropdownId) {
+    let val = document.getElementById(dropdownId).value;
+    saveEverything(); // Remember choice
+    if (!val) return;
+    let [pNumber, pName] = val.split('|');
+    let targetGraphics = team === 'Home' ? ['HomeTry', 'HomeConversion', 'HomePenalty', 'HomeDrop'] : ['VisitorTry', 'VisitorConversion', 'VisitorPenalty', 'VisitorDrop'];
+    targetGraphics.forEach(graphic => {
+        sendAPI('SetText', graphic, fieldMap.PlayerNumber, pNumber);
+        sendAPI('SetText', graphic, fieldMap.PlayerName, pName);
+    });
+    setStatus(`🎯 ${pName} Loaded`);
+}
+
+// 🔏 SCORING ACTIONS: Strictly touches score variables; never re-sends team configurations
+function scoreEvent(team, type, points, statGraphic, statField) {
+    let scoreField = team + 'Score';
+    if (points > 0) matchState[scoreField] += points;
+    matchState[statField] += 1;
+
+    if (points > 0) {
+        mainScoreboards.forEach(bg => {
+            sendAPI('SetText', bg, fieldMap[scoreField], matchState[scoreField]);
+        });
+    }
+    sendAPI('SetText', statGraphic, fieldMap[statField], matchState[statField]);
+    updateDashboard();
+    actionHistory.push({ team, points, scoreField, statGraphic, statField });
+    document.getElementById("undoBtn").style.display = "block";
+    saveEverything(); // Write current running scores to cache
+    setStatus(`✅ ${team} ${type} Added`);
+}
+
+function undoLastAction() {
+    let last = actionHistory.pop();
+    if (!last) return;
+    if (last.points > 0) matchState[last.scoreField] -= last.points;
+    matchState[last.statField] -= 1;
+
+    if (last.points > 0) {
+        mainScoreboards.forEach(bg => {
+            sendAPI('SetText', bg, fieldMap[last.scoreField], matchState[last.scoreField]);
+        });
+    }
+    sendAPI('SetText', last.statGraphic, fieldMap[last.statField], matchState[last.statField]);
+    updateDashboard();
+    if (actionHistory.length === 0) document.getElementById("undoBtn").style.display = "none";
+    saveEverything();
+    setStatus("↩️ Last Action Undone");
+}
+
+function resetMatch() {
+    if (!confirm("Reset ALL match data?")) return;
+    for (let key in matchState) matchState[key] = 0;
+    mainScoreboards.forEach(bg => {
+        sendAPI('SetText', bg, fieldMap.HomeScore, 0);
+        sendAPI('SetText', bg, fieldMap.VisitorScore, 0);
+    });
+    const allStats = ['HomeTries', 'VisitorTries', 'HomeConv', 'VisitorConv', 'HomePen', 'VisitorPen', 'HomeDrop', 'VisitorDrop', 'HomeLineout', 'VisitorLineout', 'HomeScrum', 'VisitorScrum'];
+    allStats.forEach(stat => {
+        sendAPI('SetText', 'KeyStats', fieldMap[stat], 0);
+        sendAPI('SetText', 'LineoutGraphic', fieldMap[stat], 0);
+        sendAPI('SetText', 'ScrumGraphic', fieldMap[stat], 0);
+    });
+    document.querySelectorAll('.active-overlay').forEach(el => el.classList.remove('active-overlay'));
+    actionHistory = [];
+    document.getElementById("undoBtn").style.display = "none";
+    
+    localStorage.removeItem("rugby_controller_cache"); // Wipe clear storage for fresh game
+    updateDashboard();
+    setStatus("🔄 Match Reset Complete");
+}
+
+function updateDashboard() {
+    document.getElementById('dash_HomeScore').innerText = matchState.HomeScore;
+    document.getElementById('dash_VisitorScore').innerText = matchState.VisitorScore;
+    document.getElementById('dash_Tries').innerText = `${matchState.HomeTries} - ${matchState.VisitorTries}`;
+    document.getElementById('dash_Conv').innerText = `${matchState.HomeConv} - ${matchState.VisitorConv}`;
+    document.getElementById('dash_Pen').innerText = `${matchState.HomePen} - ${matchState.VisitorPen}`;
+    document.getElementById('dash_Drop').innerText = `${matchState.HomeDrop} - ${matchState.VisitorDrop}`;
+    document.getElementById('dash_Lineout').innerText = `${matchState.HomeLineout} - ${matchState.VisitorLineout}`;
+    document.getElementById('dash_Scrum').innerText = `${matchState.HomeScrum} - ${matchState.VisitorScrum}`;
+}
+</script>
+
+</body>
+</html>
