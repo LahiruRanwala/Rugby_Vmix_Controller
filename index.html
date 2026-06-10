@@ -344,8 +344,11 @@ button:active {
 <script>
 let homeRoster = [];
 let visitorRoster = [];
-const mainScoreboards = ["MainBug", "KeyStats", "HalfTime", "FullTime", "Highlights"];
 
+// 🌟 Added "IntroCard" right here into your global update loop!
+const mainScoreboards = ["MainBug", "KeyStats", "HalfTime", "FullTime", "Highlights", "IntroCard"];
+
+// 📐 All Team Configuration fields are now shortened to stay safely under 15 characters!
 const fieldMap = {
     HomeScore: "HomeScore.Text", VisitorScore: "VisitorScore.Text",
     HomeTries: "HomeTries.Text", VisitorTries: "VisitorTries.Text",
@@ -355,8 +358,14 @@ const fieldMap = {
     HomeLineout: "HomeLineout.Text", VisitorLineout: "VisitorLineout.Text",
     HomeScrum: "HomeScrum.Text", VisitorScrum: "VisitorScrum.Text",
     PlayerName: "PlayerName.Text", PlayerNumber: "PlayerNumber.Text",
-    HomeLong: "HomeTeamLong.Text", HomeShort: "HomeTeamShort.Text", HomeLogo: "HomeLogo.Source",
-    VisitorLong: "VisitorTeamLong.Text", VisitorShort: "VisitorTeamShor.Text", VisitorLogo: "VisitorLogo.Source"
+    
+    // NEW CLEAN FIELD NAMES BELOW:
+    HomeLong: "HomeLong.Text", 
+    HomeShort: "HomeShort.Text", 
+    HomeLogo: "HomeLogo.Source",
+    VisitorLong: "VisLong.Text", 
+    VisitorShort: "VisShort.Text", 
+    VisitorLogo: "VisLogo.Source"
 };
 
 let matchState = {
@@ -365,11 +374,7 @@ let matchState = {
 };
 
 let actionHistory = [];
-
-// 🌟 Run Auto-Loader right on bootup
-window.onload = function() {
-    loadEverything();
-};
+// ... (The rest of your script functions remain exactly the same!)
 
 // 🌟 New Function: Packs up all parameters and writes them to phone cache memory
 function saveEverything() {
@@ -491,6 +496,7 @@ function pushMatchDetailsTovMix() {
     document.getElementById("label_VisitorTitle").innerText = `🏃 ${vLong.toUpperCase()}`;
     parseRostersFromUI();
 
+    // 1. Update the Main Scoreboards & Intro Cards
     mainScoreboards.forEach(bg => {
         if(hLong)   sendAPI('SetText', bg, fieldMap.HomeLong, hLong);
         if(hShort)  sendAPI('SetText', bg, fieldMap.HomeShort, hShort);
@@ -500,10 +506,25 @@ function pushMatchDetailsTovMix() {
         if(vLogo)   sendAPI('SetImage', bg, fieldMap.VisitorLogo, vLogo);
     });
     
-    saveEverything();
-    setStatus("🚀 All Graphics Updated!");
-}
+    // 🌟 NEW: Instantly push the Home Logo to all 4 Home Lower Third cards
+    if(hLogo) {
+        const homeL3Cards = ['HomeTry', 'HomeConversion', 'HomePenalty', 'HomeDrop'];
+        homeL3Cards.forEach(card => {
+            sendAPI('SetImage', card, fieldMap.HomeLogo, hLogo);
+        });
+    }
 
+    // 🌟 NEW: Instantly push the Visitor Logo to all 4 Visitor Lower Third cards
+    if(vLogo) {
+        const visL3Cards = ['VisitorTry', 'VisitorConversion', 'VisitorPenalty', 'VisitorDrop'];
+        visL3Cards.forEach(card => {
+            sendAPI('SetImage', card, fieldMap.VisitorLogo, vLogo);
+        });
+    }
+    
+    saveEverything();
+    setStatus("🚀 All Graphics & Lower Third Logos Updated!");
+}
 function getBaseURL() {
     let rawIP = document.getElementById("vmixIP").value.trim();
     let cleanIP = rawIP.replace(/^https?:\/\//i, '').split(':')[0];
