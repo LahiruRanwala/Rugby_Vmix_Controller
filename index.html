@@ -3,57 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rugby Vmix Controller</title>
+<title>ThePapare Rugby Live Controller Pro V10</title>
 
 <style>
+/* ==========================================================================
+   AUTHENTIC THEPAPARE BROADCAST PALETTE (REVERSED FROM ON-AIR GRAPHICS)
+   ========================================================================== */
 body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: white;
-    padding: 15px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #090e17; /* Deep Midnight Navy */
+    color: #f1f2f6;
+    padding: 20px;
     margin: 0;
     display: flex;
-    gap: 20px;
+    gap: 25px;
     flex-wrap: wrap;
 }
 
+/* Branded Top Banner Header */
+.papare-header {
+    width: 100%;
+    background: linear-gradient(135deg, #c1272d 0%, #0a111e 100%); /* Crimson Red to Deep Navy */
+    padding: 15px 25px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
+    border-bottom: 3px solid #f7931e; /* On-Air Orange Accent */
+}
+
+.papare-brand-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.papare-logo-img {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+}
+
+.papare-brand-text h1 {
+    margin: 0;
+    font-size: 26px;
+    letter-spacing: 0.5px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+.papare-brand-text span {
+    font-size: 13px;
+    color: #f7931e; /* Orange tagline text */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.live-indicator {
+    background: #ffffff;
+    color: #c1272d; /* Crimson red text */
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    animation: pulse-live 1.5s infinite;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+@keyframes pulse-live {
+    0% { opacity: 0.8; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.8; transform: scale(0.98); }
+}
+
+/* Panel Layouts */
 .controls-panel {
     flex: 2;
-    min-width: 450px;
-    background: #1e1e1e;
-    padding: 20px;
-    border-radius: 12px;
+    min-width: 480px;
+    background: #101724; /* Dark blue-grey production block */
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid #1a2436;
 }
 
 .dashboard-panel {
     flex: 1;
-    min-width: 300px;
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    border: 2px solid #333;
+    min-width: 320px;
+    background: #0b101a;
+    padding: 25px;
+    border-radius: 14px;
+    border: 2px solid #f7931e; /* Orange highlighted boundary */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
     height: fit-content;
 }
 
+/* Setup Section Styling */
 .btn-toggle-setup {
-    background: #2c3e50;
-    border: 1px solid #34495e;
+    background: #161f30;
+    border: 1px solid #233149;
     width: 100%;
-    padding: 14px;
-    font-size: 15px;
-    margin-bottom: 15px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
     border-radius: 8px;
-    color: #00a8ff;
+    color: #f7931e;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.btn-toggle-setup:hover {
+    background: #1d293f;
+    color: #ffb04d;
 }
 
 .setup-panel {
     display: none; 
     width: 100%;
-    background: #1c2833;
-    padding: 20px;
+    background: #131b2b;
+    padding: 22px;
     border-radius: 12px;
-    border: 2px solid #2980b9;
-    margin-bottom: 20px;
+    border: 2px solid #c1272d;
+    margin-bottom: 25px;
     box-sizing: border-box;
 }
 
@@ -64,171 +142,258 @@ body {
 }
 
 h2, h3 {
-    color: #00a8ff;
+    color: #f7931e;
     margin-top: 0;
+    font-weight: 800;
 }
 
 label {
     display: block;
-    margin: 15px 0 5px;
+    margin: 14px 0 5px;
     font-weight: bold;
-    color: #aaa;
-    font-size: 14px;
+    color: #798ba4;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input, select, textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border-radius: 6px;
-    border: none;
-    margin-bottom: 10px;
+    border: 1px solid #202d44;
+    margin-bottom: 12px;
     font-weight: bold;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 input {
-    background: #333;
-    color: #00a8ff;
+    background: #172235;
+    color: #f7931e;
     text-align: center;
 }
 
 .text-left {
     text-align: left !important;
-    color: #fff !important;
+    color: #ffffff !important;
 }
 
 select {
-    background: #444;
+    background: #1c2a42;
     color: white;
+    cursor: pointer;
 }
 
 textarea {
-    background: #333;
-    color: #fff;
+    background: #172235;
+    color: #ffffff;
     font-family: monospace;
     resize: vertical;
 }
 
+/* Sections & Action Modules */
 .team-section {
-    background: #2a2a2a;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    background: #141d2d;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 5px solid #2d3d5a;
 }
 
 .overlay-section {
-    background: #222;
+    background: #0b101a;
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #444;
+    margin-top: 20px;
+    border: 1px dashed #233149;
 }
 
+/* Grids */
 .grid-6 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
     margin-top: 10px;
 }
 
 .grid-4 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 5px;
-    margin-top: 5px;
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
     margin-top: 5px;
 }
 
+/* High-Visibility Professional Buttons */
 button {
-    padding: 12px 5px;
+    padding: 14px 5px;
     border: none;
     border-radius: 6px;
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 800;
     cursor: pointer;
     color: white;
-    transition: background 0.1s, transform 0.05s;
+    transition: background 0.1s, transform 0.05s, box-shadow 0.1s;
+    text-transform: uppercase;
 }
 
 button:active {
-    transform: scale(0.92);
+    transform: scale(0.94);
 }
 
 .btn-flash-confirm {
-    background: #f1c40f !important;
-    color: #000 !important;
-    transform: scale(0.95);
+    background: #ffffff !important;
+    color: #090e17 !important;
+    box-shadow: 0 0 15px #ffffff !important;
 }
 
+/* Triggered State Only - Red Active Alert */
 .active-overlay {
-    background: #e74c3c !important;
-    box-shadow: 0 0 15px #e74c3c !important;
+    background: #c1272d !important;
+    box-shadow: 0 0 20px rgba(193, 39, 45, 0.7) !important;
     animation: pulse-glow 1.5s infinite alternate;
 }
 
 @keyframes pulse-glow {
     from { opacity: 0.9; }
-    to { opacity: 1; box-shadow: 0 0 22px #e74c3c; }
+    to { opacity: 1; box-shadow: 0 0 25px #ff4d4d; }
 }
 
-.btn-home { background: #27ae60; }
-.btn-visitor { background: #c0392b; }
-.btn-stat { background: #555; }
-.btn-l3 { background: #2980b9; padding: 10px 2px; font-size: 11px; }
-.btn-global-overlay { background: #d35400; padding: 14px; font-size: 14px; }
-.btn-undo { background: #f39c12; width: 100%; padding: 15px; margin-top: 15px; font-size: 16px; display: none; }
-.btn-reset { background: #8e44ad; width: 100%; padding: 16px; margin-top: 15px; font-size: 17px; }
-.btn-update { background: #2980b9; font-size: 15px; padding: 12px; width: 100%; margin-top: 10px; }
+/* Team Score Generators */
+.btn-home { 
+    background: #1e6b3f; 
+    box-shadow: 0 4px 10px rgba(30,107,63,0.2);
+}
+.btn-home:hover { background: #278a51; }
 
+.btn-visitor { 
+    background: #871c1c; 
+    box-shadow: 0 4px 10px rgba(135,28,28,0.2);
+}
+.btn-visitor:hover { background: #ab2424; }
+
+/* Transparent Action Lower Third Overlays */
+.btn-l3 { 
+    background: rgba(37, 51, 74, 0.4); 
+    padding: 12px 2px; 
+    font-size: 13px; 
+    border: 1px solid #233149;
+    color: #ffffff;
+}
+.btn-l3:hover { background: rgba(49, 67, 97, 0.6); }
+
+/* Custom Colors for Infrequent Stat Triggers */
+.btn-stat-compact {
+    background: #1c2b42;
+    padding: 12px;
+    font-size: 13px;
+    border: 1px solid #2e4361;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+.btn-stat-compact:hover {
+    background: #253957;
+    border-color: #3f5b85;
+}
+
+.btn-stat-counter {
+    background: #141f30;
+    padding: 11px;
+    font-size: 12px;
+    border: 1px solid #20314a;
+    color: #a2b4ce;
+}
+.btn-stat-counter:hover {
+    background: #1b2a40;
+    color: #ffffff;
+}
+
+/* Utility Core System Actions */
+.btn-undo { background: #d96e00; width: 100%; padding: 16px; margin-top: 15px; font-size: 16px; display: none; box-shadow: 0 4px 12px rgba(217,110,0,0.3); }
+.btn-reset { background: #4a1f5a; width: 100%; padding: 16px; margin-top: 15px; font-size: 16px; box-shadow: 0 4px 12px rgba(74,31,90,0.3); }
+.btn-update { background: #f7931e; font-size: 15px; padding: 14px; width: 100%; margin-top: 10px; box-shadow: 0 4px 12px rgba(247,147,30,0.3); }
+
+/* Live Status Box */
 .status-box {
-    margin-top: 15px;
-    background: #222;
-    padding: 10px;
+    margin-top: 18px;
+    background: #060a12;
+    padding: 12px;
     border-radius: 8px;
     text-align: center;
     font-size: 13px;
-    color: #bbb;
+    color: #f7931e;
+    font-weight: bold;
+    border: 1px solid #131b2b;
+    letter-spacing: 0.5px;
 }
 
+/* Real-Time Preview Monitor Metrics */
 .dash-row {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #333;
+    padding: 10px 0;
+    border-bottom: 1px solid #162030;
+    font-size: 14px;
+    color: #92a4be;
+}
+.dash-row span:last-child {
+    font-weight: 900;
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 15px;
 }
 
 .dash-score {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 46px;
+    font-weight: 900;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
-    color: #fff;
+    align-items: center;
+    margin-bottom: 25px;
+    color: #ffffff;
+    background: #060a12;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border: 1px solid #172235;
+    font-family: monospace;
 }
 
-.home-color { color: #2ecc71; }
-.vis-color { color: #e74c3c; }
+.home-color { color: #52d689; }
+.vis-color { color: #ff5c5c; }
 </style>
 </head>
 
 <body>
 
+<!-- Branded Header Environment -->
+<div class="papare-header">
+    <div class="papare-brand-block">
+        <img src="https://www.thepapare.com/wp-content/uploads/Logo-01-1.png" alt="ThePapare Logo" class="papare-logo-img">
+        <div class="papare-brand-text">
+            <h1>ThePapare Sports</h1>
+            <span>Sri Lanka's No.1 Sports Channel • Live Production Suite</span>
+        </div>
+    </div>
+    <div class="live-indicator">● BROADCAST LINK ACTIVE</div>
+</div>
+
 <div class="controls-panel">
     
     <button class="btn-toggle-setup" onclick="toggleSetupMenu()">
-        🛠️ OPEN / CLOSE MATCH SETUP MENU
+        🛠️ OPEN / CLOSE MATCH SETUP PANEL
     </button>
 
     <div class="setup-panel" id="matchSetupPanel">
         <h2>⚙️ MATCH DETAILS SETUP</h2>
         <div class="setup-grid">
-            <div class="team-section" style="border-top: 4px solid #27ae60;">
+            <div class="team-section" style="border-left: 5px solid #52d689;">
                 <h3 class="home-color">🏠 Home Team Configuration</h3>
                 <label>Long Name</label>
                 <input type="text" id="setup_HomeLong" class="text-left" value="Kandy SC" oninput="saveEverything()">
@@ -240,7 +405,7 @@ button:active {
                 <textarea id="setup_HomeRoster" rows="5" oninput="saveEverything()">10|Mahela Perera&#10;01|John Smith&#10;15|Chaminda Bandara</textarea>
             </div>
 
-            <div class="team-section" style="border-top: 4px solid #c0392b;">
+            <div class="team-section" style="border-left: 5px solid #ff5c5c;">
                 <h3 class="vis-color">🏃 Visitor Team Configuration</h3>
                 <label>Long Name</label>
                 <input type="text" id="setup_VisitorLong" class="text-left" value="CR & FC" oninput="saveEverything()">
@@ -255,100 +420,110 @@ button:active {
         <button class="btn-update" onclick="pushMatchDetailsTovMix()">🚀 UPDATE MATCH DETAILS & ROSTERS</button>
     </div>
 
-    <h2>🏉 MATCH CONTROLS</h2>
-    <label>🌐 vMix PC IP Address</label>
-    <input type="text" id="vmixIP" value="10.45.180.35" placeholder="Example: 192.168.1.100" oninput="saveEverything()">
+    <h2>🏉 MAIN MATCH ENGAGEMENT</h2>
+    <label>🌐 vMix SYSTEM IP ADDRESS</label>
+    <input type="text" id="vmixIP" value="127.0.0.1" placeholder="Example: 192.168.1.100" oninput="saveEverything()">
 
-    <div class="overlay-section">
-        <h3 style="color: #d35400; margin-bottom: 5px;">📺 LIVE GRAPHICS OVERLAYS</h3>
-        <div class="grid-2">
-            <button id="btn_overlay_Lineout" class="btn-global-overlay" onclick="toggleOverlay('LineoutGraphic', this)">
-                📋 LINEOUT STATS CARD
-            </button>
-            <button id="btn_overlay_Scrum" class="btn-global-overlay" onclick="toggleOverlay('ScrumGraphic', this)">
-                📋 SCRUM STATS CARD
-            </button>
-        </div>
-    </div>
-
-    <div class="team-section">
+    <!-- Home Control Terminal Block -->
+    <div class="team-section" style="border-left: 5px solid #52d689;">
         <h3 id="label_HomeTitle" class="home-color">🏠 HOME TEAM</h3>
         <select id="homeDropdown" onchange="pushPlayerToGraphics('Home','homeDropdown')">
             <option value="">-- Select Home Player --</option>
         </select>
 
-        <label>🔢 Add Score & Stats</label>
+        <label>🔢 Core Scoring Matrix</label>
         <div class="grid-6">
-            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Try',5,'KeyStats','HomeTries')">Try (+5)</button>
-            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Conv',2,'KeyStats','HomeConv')">Conv (+2)</button>
-            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Pen',3,'KeyStats','HomePen')">Penalty (+3)</button>
-            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Drop',3,'KeyStats','HomeDrop')">Drop (+3)</button>
-            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Home','Lineout',0,'LineoutGraphic','HomeLineout')">Lineout</button>
-            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Home','Scrum',0,'ScrumGraphic','HomeScrum')">Scrum</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Try',5,'KeyStats.gtzip','HomeTries')">Try (+5)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Conv',2,'KeyStats.gtzip','HomeConv')">Conv (+2)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Pen',3,'KeyStats.gtzip','HomePen')">Pen (+3)</button>
+            <button class="btn-home" onclick="triggerTapConfirm(this); scoreEvent('Home','Drop',3,'KeyStats.gtzip','HomeDrop')">Drop (+3)</button>
         </div>
 
-        <label>🎬 Lower Third Controls</label>
+        <label>🎬 Action Lower Third Overlays</label>
         <div class="grid-4">
-            <button class="btn-l3" onclick="toggleOverlay('HomeTry', this)">TRY</button>
-            <button class="btn-l3" onclick="toggleOverlay('HomeConversion', this)">CONV</button>
-            <button class="btn-l3" onclick="toggleOverlay('HomePenalty', this)">PEN</button>
-            <button class="btn-l3" onclick="toggleOverlay('HomeDrop', this)">DROP</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomeTry.gtzip', this)">TRY</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomeConversion.gtzip', this)">CONV</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomePenalty.gtzip', this)">PEN</button>
+            <button class="btn-l3" onclick="toggleOverlay('HomeDrop.gtzip', this)">DROP</button>
         </div>
     </div>
 
-    <div class="team-section">
+    <!-- Visitor Control Terminal Block -->
+    <div class="team-section" style="border-left: 5px solid #ff5c5c;">
         <h3 id="label_VisitorTitle" class="vis-color">🏃 VISITOR TEAM</h3>
         <select id="visitorDropdown" onchange="pushPlayerToGraphics('Visitor','visitorDropdown')">
             <option value="">-- Select Visitor Player --</option>
         </select>
 
-        <label>🔢 Add Score & Stats</label>
+        <label>🔢 Core Scoring Matrix</label>
         <div class="grid-6">
-            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Try',5,'KeyStats','VisitorTries')">Try (+5)</button>
-            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Conv',2,'KeyStats','VisitorConv')">Conv (+2)</button>
-            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Pen',3,'KeyStats','VisitorPen')">Penalty (+3)</button>
-            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Drop',3,'KeyStats','VisitorDrop')">Drop (+3)</button>
-            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Lineout',0,'LineoutGraphic','VisitorLineout')">Lineout</button>
-            <button class="btn-stat" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Scrum',0,'ScrumGraphic','VisitorScrum')">Scrum</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Try',5,'KeyStats.gtzip','VisitorTries')">Try (+5)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Conv',2,'KeyStats.gtzip','VisitorConv')">Conv (+2)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Pen',3,'KeyStats.gtzip','VisitorPen')">Pen (+3)</button>
+            <button class="btn-visitor" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Drop',3,'KeyStats.gtzip','VisitorDrop')">Drop (+3)</button>
         </div>
 
-        <label>🎬 Lower Third Controls</label>
+        <label>🎬 Action Lower Third Overlays</label>
         <div class="grid-4">
-            <button class="btn-l3" onclick="toggleOverlay('VisitorTry', this)">TRY</button>
-            <button class="btn-l3" onclick="toggleOverlay('VisitorConversion', this)">CONV</button>
-            <button class="btn-l3" onclick="toggleOverlay('VisitorPenalty', this)">PEN</button>
-            <button class="btn-l3" onclick="toggleOverlay('VisitorDrop', this)">DROP</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorTry.gtzip', this)">TRY</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorConversion.gtzip', this)">CONV</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorPenalty.gtzip', this)">PEN</button>
+            <button class="btn-l3" onclick="toggleOverlay('VisitorDrop.gtzip', this)">DROP</button>
         </div>
     </div>
 
-    <button id="undoBtn" class="btn-undo" onclick="undoLastAction()">↩️ UNDO LAST ACTION</button>
-    <button class="btn-reset" onclick="resetMatch()">🔄 RESET ALL MATCH DATA</button>
-    <div class="status-box" id="statusBox">READY</div>
+    <!-- Infrequent Stat Graphics Block -->
+    <div class="overlay-section">
+        <h3 style="color: #92a4be; margin-bottom: 5px; font-size: 14px;">📋 INFREQUENT STAT OVERLAYS</h3>
+        <div class="grid-2">
+            <button id="btn_overlay_Lineout" class="btn-stat-compact" onclick="toggleOverlay('LineoutGraphic.gtzip', this)">
+                📋 LINEOUT STATS CARD
+            </button>
+            <button id="btn_overlay_Scrum" class="btn-stat-compact" onclick="toggleOverlay('ScrumGraphic.gtzip', this)">
+                📋 SCRUM STATS CARD
+            </button>
+        </div>
+        <div class="grid-2" style="margin-top: 10px;">
+            <button class="btn-stat-counter" onclick="triggerTapConfirm(this); scoreEvent('Home','Lineout',0,'LineoutGraphic.gtzip','HomeLineout')">🏠 +1 Home Lineout</button>
+            <button class="btn-stat-counter" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Lineout',0,'LineoutGraphic.gtzip','VisitorLineout')">🏃 +1 Vis Lineout</button>
+        </div>
+        <div class="grid-2" style="margin-top: 6px;">
+            <button class="btn-stat-counter" onclick="triggerTapConfirm(this); scoreEvent('Home','Scrum',0,'ScrumGraphic.gtzip','HomeScrum')">🏠 +1 Home Scrum</button>
+            <button class="btn-stat-counter" onclick="triggerTapConfirm(this); scoreEvent('Visitor','Scrum',0,'ScrumGraphic.gtzip','VisitorScrum')">🏃 +1 Vis Scrum</button>
+        </div>
+    </div>
+
+    <button id="undoBtn" class="btn-undo" onclick="undoLastAction()">↩️ UNDO LAST MASTER ACTION</button>
+    <button class="btn-reset" onclick="resetMatch()">🔄 RESET ALL CURRENT MATCH DATA</button>
+    <div class="status-box" id="statusBox">SYSTEM ONLINE & READY</div>
 </div>
 
+<!-- Right-Side Analytics Preview Panel -->
 <div class="dashboard-panel">
-    <h3>📊 LIVE PREVIEW</h3>
+    <h3>📊 LIVE VIEW MONITOR</h3>
     <div class="dash-score">
         <span id="dash_HomeScore" class="home-color">0</span>
-        <span style="color:#666;">-</span>
+        <span style="color:#25334a;">:</span>
         <span id="dash_VisitorScore" class="vis-color">0</span>
     </div>
-    <div class="dash-row"><span>Tries</span><span id="dash_Tries">0 - 0</span></div>
-    <div class="dash-row"><span>Conversions</span><span id="dash_Conv">0 - 0</span></div>
-    <div class="dash-row"><span>Penalties</span><span id="dash_Pen">0 - 0</span></div>
-    <div class="dash-row"><span>Drop Goals</span><span id="dash_Drop">0 - 0</span></div>
-    <div class="dash-row"><span>Lineouts</span><span id="dash_Lineout">0 - 0</span></div>
-    <div class="dash-row"><span>Scrums</span><span id="dash_Scrum">0 - 0</span></div>
+    <div class="dash-row"><span>Tries Logged</span><span id="dash_Tries">0 - 0</span></div>
+    <div class="dash-row"><span>Conversions Logged</span><span id="dash_Conv">0 - 0</span></div>
+    <div class="dash-row"><span>Penalties Logged</span><span id="dash_Pen">0 - 0</span></div>
+    <div class="dash-row"><span>Drop Goals Logged</span><span id="dash_Drop">0 - 0</span></div>
+    <div class="dash-row"><span>Lineouts Tracked</span><span id="dash_Lineout">0 - 0</span></div>
+    <div class="dash-row"><span>Scrums Tracked</span><span id="dash_Scrum">0 - 0</span></div>
 </div>
 
 <script>
+// ==========================================================================
+// CORE WORKFLOW FUNCTIONAL LOGIC WITH .GTZIP EXTENSIONS
+// ==========================================================================
 let homeRoster = [];
 let visitorRoster = [];
+// Main scoreboards array updated with .gtzip
+const mainScoreboards = ["MainBug.gtzip", "KeyStats.gtzip", "HalfTime.gtzip", "FullTime.gtzip", "Highlights.gtzip", "IntroCard.gtzip"];
 
-// 🌟 Added "IntroCard" right here into your global update loop!
-const mainScoreboards = ["MainBug", "KeyStats", "HalfTime", "FullTime", "Highlights", "IntroCard"];
-
-// 📐 All Team Configuration fields are now shortened to stay safely under 15 characters!
+// Field mappings kept EXACTLY as they were
 const fieldMap = {
     HomeScore: "HomeScore.Text", VisitorScore: "VisitorScore.Text",
     HomeTries: "HomeTries.Text", VisitorTries: "VisitorTries.Text",
@@ -358,14 +533,8 @@ const fieldMap = {
     HomeLineout: "HomeLineout.Text", VisitorLineout: "VisitorLineout.Text",
     HomeScrum: "HomeScrum.Text", VisitorScrum: "VisitorScrum.Text",
     PlayerName: "PlayerName.Text", PlayerNumber: "PlayerNumber.Text",
-    
-    // NEW CLEAN FIELD NAMES BELOW:
-    HomeLong: "HomeLong.Text", 
-    HomeShort: "HomeShort.Text", 
-    HomeLogo: "HomeLogo.Source",
-    VisitorLong: "VisLong.Text", 
-    VisitorShort: "VisShort.Text", 
-    VisitorLogo: "VisLogo.Source"
+    HomeLong: "HomeLong.Text", HomeShort: "HomeShort.Text", HomeLogo: "HomeLogo.Source",
+    VisitorLong: "VisLong.Text", VisitorShort: "VisShort.Text", VisitorLogo: "VisLogo.Source"
 };
 
 let matchState = {
@@ -374,9 +543,11 @@ let matchState = {
 };
 
 let actionHistory = [];
-// ... (The rest of your script functions remain exactly the same!)
 
-// 🌟 New Function: Packs up all parameters and writes them to phone cache memory
+window.onload = function() {
+    loadEverything();
+};
+
 function saveEverything() {
     const backupPackage = {
         matchState: matchState,
@@ -398,7 +569,6 @@ function saveEverything() {
     localStorage.setItem("rugby_controller_cache", JSON.stringify(backupPackage));
 }
 
-// 🌟 New Function: Restores exact states dynamically after a browser crash or refresh
 function loadEverything() {
     const rawCache = localStorage.getItem("rugby_controller_cache");
     if (!rawCache) {
@@ -423,7 +593,6 @@ function loadEverything() {
         document.getElementById("setup_VisitorRoster").value = data.inputs.vRoster;
     }
 
-    // Restore Controller Labels
     let hLong = document.getElementById("setup_HomeLong").value.trim();
     let vLong = document.getElementById("setup_VisitorLong").value.trim();
     if(hLong) document.getElementById("label_HomeTitle").innerText = `🏠 ${hLong.toUpperCase()}`;
@@ -431,7 +600,6 @@ function loadEverything() {
 
     parseRostersFromUI();
 
-    // Re-select previous active dropdown index if valid
     if (data.inputs) {
         document.getElementById("homeDropdown").value = data.inputs.homeSel;
         document.getElementById("visitorDropdown").value = data.inputs.visitorSel;
@@ -457,9 +625,9 @@ function toggleOverlay(inputName, buttonElement) {
     if (buttonElement) buttonElement.classList.toggle("active-overlay");
     
     if(buttonElement && buttonElement.classList.contains("active-overlay")) {
-        setStatus(`📺 ${inputName} LIVE ON SCREEN`);
+        setStatus(`📺 ${inputName} LIVE ON AIR`);
     } else {
-        setStatus("📺 Overlay Cleared");
+        setStatus("📺 Overlay Cleared From Screen");
     }
 }
 
@@ -483,7 +651,6 @@ function populateList(elementId, rosterArray) {
     });
 }
 
-// 🔏 THE IDENTITY ISOLATION GATEWAY: Only this button pushes names/logos to vMix
 function pushMatchDetailsTovMix() {
     let hLong = document.getElementById("setup_HomeLong").value.trim();
     let hShort = document.getElementById("setup_HomeShort").value.trim();
@@ -496,7 +663,6 @@ function pushMatchDetailsTovMix() {
     document.getElementById("label_VisitorTitle").innerText = `🏃 ${vLong.toUpperCase()}`;
     parseRostersFromUI();
 
-    // 1. Update the Main Scoreboards & Intro Cards
     mainScoreboards.forEach(bg => {
         if(hLong)   sendAPI('SetText', bg, fieldMap.HomeLong, hLong);
         if(hShort)  sendAPI('SetText', bg, fieldMap.HomeShort, hShort);
@@ -505,26 +671,27 @@ function pushMatchDetailsTovMix() {
         if(vShort)  sendAPI('SetText', bg, fieldMap.VisitorShort, vShort);
         if(vLogo)   sendAPI('SetImage', bg, fieldMap.VisitorLogo, vLogo);
     });
-    
-    // 🌟 NEW: Instantly push the Home Logo to all 4 Home Lower Third cards
+
     if(hLogo) {
-        const homeL3Cards = ['HomeTry', 'HomeConversion', 'HomePenalty', 'HomeDrop'];
+        // Updated inner arrays with .gtzip
+        const homeL3Cards = ['HomeTry.gtzip', 'HomeConversion.gtzip', 'HomePenalty.gtzip', 'HomeDrop.gtzip'];
         homeL3Cards.forEach(card => {
             sendAPI('SetImage', card, fieldMap.HomeLogo, hLogo);
         });
     }
 
-    // 🌟 NEW: Instantly push the Visitor Logo to all 4 Visitor Lower Third cards
     if(vLogo) {
-        const visL3Cards = ['VisitorTry', 'VisitorConversion', 'VisitorPenalty', 'VisitorDrop'];
+        // Updated inner arrays with .gtzip
+        const visL3Cards = ['VisitorTry.gtzip', 'VisitorConversion.gtzip', 'VisitorPenalty.gtzip', 'VisitorDrop.gtzip'];
         visL3Cards.forEach(card => {
             sendAPI('SetImage', card, fieldMap.VisitorLogo, vLogo);
         });
     }
     
     saveEverything();
-    setStatus("🚀 All Graphics & Lower Third Logos Updated!");
+    setStatus("🚀 All Dynamic Overlay Assets Successfully Updated!");
 }
+
 function getBaseURL() {
     let rawIP = document.getElementById("vmixIP").value.trim();
     let cleanIP = rawIP.replace(/^https?:\/\//i, '').split(':')[0];
@@ -542,23 +709,23 @@ function sendAPI(func, input = "", field = "", val = "") {
             url += `&SelectedName=${encodeURIComponent(field)}&Value=${encodeURIComponent(val)}`;
         }
     }
-    fetch(url).catch(error => { console.error(error); setStatus("❌ Connection Failed"); });
+    fetch(url).catch(error => { console.error(error); setStatus("❌ Connection Interrupted"); });
 }
 
 function pushPlayerToGraphics(team, dropdownId) {
     let val = document.getElementById(dropdownId).value;
-    saveEverything(); // Remember choice
+    saveEverything();
     if (!val) return;
     let [pNumber, pName] = val.split('|');
-    let targetGraphics = team === 'Home' ? ['HomeTry', 'HomeConversion', 'HomePenalty', 'HomeDrop'] : ['VisitorTry', 'VisitorConversion', 'VisitorPenalty', 'VisitorDrop'];
+    // Updated ternary target logic with .gtzip
+    let targetGraphics = team === 'Home' ? ['HomeTry.gtzip', 'HomeConversion.gtzip', 'HomePenalty.gtzip', 'HomeDrop.gtzip'] : ['VisitorTry.gtzip', 'VisitorConversion.gtzip', 'VisitorPenalty.gtzip', 'VisitorDrop.gtzip'];
     targetGraphics.forEach(graphic => {
         sendAPI('SetText', graphic, fieldMap.PlayerNumber, pNumber);
         sendAPI('SetText', graphic, fieldMap.PlayerName, pName);
     });
-    setStatus(`🎯 ${pName} Loaded`);
+    setStatus(`🎯 ${pName} Staged For Action Card`);
 }
 
-// 🔏 SCORING ACTIONS: Strictly touches score variables; never re-sends team configurations
 function scoreEvent(team, type, points, statGraphic, statField) {
     let scoreField = team + 'Score';
     if (points > 0) matchState[scoreField] += points;
@@ -573,8 +740,8 @@ function scoreEvent(team, type, points, statGraphic, statField) {
     updateDashboard();
     actionHistory.push({ team, points, scoreField, statGraphic, statField });
     document.getElementById("undoBtn").style.display = "block";
-    saveEverything(); // Write current running scores to cache
-    setStatus(`✅ ${team} ${type} Added`);
+    saveEverything();
+    setStatus(`✅ ${team} ${type} Registered Successfully`);
 }
 
 function undoLastAction() {
@@ -592,11 +759,11 @@ function undoLastAction() {
     updateDashboard();
     if (actionHistory.length === 0) document.getElementById("undoBtn").style.display = "none";
     saveEverything();
-    setStatus("↩️ Last Action Undone");
+    setStatus("↩️ System Status Reverted Successfully");
 }
 
 function resetMatch() {
-    if (!confirm("Reset ALL match data?")) return;
+    if (!confirm("Confirm Reset Action? This completely empties current match data panels.")) return;
     for (let key in matchState) matchState[key] = 0;
     mainScoreboards.forEach(bg => {
         sendAPI('SetText', bg, fieldMap.HomeScore, 0);
@@ -604,17 +771,18 @@ function resetMatch() {
     });
     const allStats = ['HomeTries', 'VisitorTries', 'HomeConv', 'VisitorConv', 'HomePen', 'VisitorPen', 'HomeDrop', 'VisitorDrop', 'HomeLineout', 'VisitorLineout', 'HomeScrum', 'VisitorScrum'];
     allStats.forEach(stat => {
-        sendAPI('SetText', 'KeyStats', fieldMap[stat], 0);
-        sendAPI('SetText', 'LineoutGraphic', fieldMap[stat], 0);
-        sendAPI('SetText', 'ScrumGraphic', fieldMap[stat], 0);
+        // Included .gtzip on the stat resets
+        sendAPI('SetText', 'KeyStats.gtzip', fieldMap[stat], 0);
+        sendAPI('SetText', 'LineoutGraphic.gtzip', fieldMap[stat], 0);
+        sendAPI('SetText', 'ScrumGraphic.gtzip', fieldMap[stat], 0);
     });
     document.querySelectorAll('.active-overlay').forEach(el => el.classList.remove('active-overlay'));
     actionHistory = [];
     document.getElementById("undoBtn").style.display = "none";
     
-    localStorage.removeItem("rugby_controller_cache"); // Wipe clear storage for fresh game
+    localStorage.removeItem("rugby_controller_cache");
     updateDashboard();
-    setStatus("🔄 Match Reset Complete");
+    setStatus("🔄 Panel Reset Protocol Terminated");
 }
 
 function updateDashboard() {
